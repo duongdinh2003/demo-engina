@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "engina",
+    "slug": "engina",
+    "version": "1.0.0",
+    "scheme": "engina",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mobile.engina"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.mobile.engina"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": ["expo-font"],
+    "extra": {
+      "eas": {
+        "projectId": "14742c60-e38c-49c1-b917-16878dd43550"
+      }
+    }
+  }
+}
