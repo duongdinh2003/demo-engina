@@ -14,6 +14,7 @@ const FormField = ({
   value,
   placeholder,
   handleChangeText,
+  keyboardType,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +30,7 @@ const FormField = ({
           placeholderTextColor={Colors.BLACK}
           onChangeText={handleChangeText}
           secureTextEntry={title === "Password" && !showPassword}
+          keyboardType={keyboardType}
         />
         {title === "Password" && (
           <TouchableOpacity

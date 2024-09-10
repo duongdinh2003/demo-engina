@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import Colors from "../../constants/Colors";
 import { AuthContext } from "../../context/AuthContext";
 import GoogleAuthButton from "../../components/GoogleAuthButton";
+import PasswordField from "../../components/PasswordField";
 
 export default function SignUpScreen() {
   const { signup, isLoading } = useContext(AuthContext);
@@ -88,8 +89,8 @@ export default function SignUpScreen() {
             title="Password"
             handleChangeText={(e) => setForm({ ...form, password: e })}
           />
-          <FormField
-            title="Password"
+          <PasswordField
+            title="Confirm password"
             handleChangeText={(e) => setForm({ ...form, confirm_password: e })}
           />
 

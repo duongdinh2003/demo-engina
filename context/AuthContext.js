@@ -3,38 +3,41 @@ import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import { BASE_URL } from "../constants/api";
 import { Alert } from "react-native";
+import { handleSignIn, handleSignUp } from "../app/services/handleAPI";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
-  // const [userInfo, setUserInfo] = useState(null);
+  const [isFirstSignIn, setIsFirstSignIn] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
-  const signin = (username, password) => {
+  const signin = async (username, password) => {
     if (!username || !password) {
       Alert.alert("Notice", "Please fill in all the fields!");
     } else {
-      setIsLoading(true);
-      axios
-        .post(`${BASE_URL}/login/`, {
-          username,
-          password,
-        })
-        .then((res) => {
-          let tokens = res.data;
+      // setIsLoading(true);
+
+      try {
+        const response = await handleSignIn(username, password);
+        if (response.status === 200) {
+          // setIsLoading(false);
+          // console.log(response.data);
+          let tokens = response.data;
           setUserToken(tokens?.access);
 
           AsyncStorage.setItem("userToken", tokens?.access);
-
-          console.log("Response:", tokens);
-          console.log("Access Token sign in:", tokens?.access);
-        })
-        .catch((e) => {
-          console.log("Error sign in:", e);
-        });
-
-      setIsLoading(false);
+        }
+      } catch (error) {
+        if (error.status === 400) {
+          Alert.alert("Error", error?.data?.details);
+        } else {
+          Alert.alert("Error", "An unexpected error occurred.");
+        }
+      } finally {
+        // setIsLoading(false);
+      }
     }
   };
 
@@ -45,31 +48,33 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  const signup = (username, password, email) => {
+  const signup = async (username, password, email) => {
     if (!username || !password || !email) {
       Alert.alert("Notice", "Please fill in all the fields!");
     } else {
-      setIsLoading(true);
-      axios
-        .post(`${BASE_URL}/register/`, {
-          username,
-          password,
-          email,
-        })
-        .then((res) => {
-          let signUpTokens = res.data;
+      // setIsLoading(true);
+      try {
+        const response = await handleSignUp(username, password, email);
+        if (response.status === 201) {
+          let signUpTokens = response.data;
+          // console.log("Resp:", signUpTokens);
           setUserToken(signUpTokens?.tokens?.access);
+          setIsFirstSignIn(signUpTokens?.tokens?.is_first_login);
 
           AsyncStorage.setItem("userToken", signUpTokens?.tokens?.access);
+        }
+      } catch (error) {
+        if (error.status === 400 && error.data) {
+          const errorMessages = Object.entries(error?.data)
+            .map(([field, message]) => `${message.join(", ")}`)
+            .join("\n");
+          Alert.alert("Error", errorMessages);
+        } else {
+          Alert.alert("Error", "An unexpected error occurred.");
+        }
+      }
 
-          console.log("Response:", signUpTokens);
-          console.log("Access Token sign up:", signUpTokens?.tokens?.access);
-        })
-        .catch((e) => {
-          console.log("Error sign up:", e);
-        });
-
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -90,7 +95,18 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signin, signout, signup, isLoading, userToken }}
+      value={{
+        signin,
+        signout,
+        signup,
+        isLoading,
+        userToken,
+        setUserToken,
+        isFirstSignIn,
+        setIsFirstSignIn,
+        userInfo,
+        setUserInfo,
+      }}
     >
       {children}
     </AuthContext.Provider>

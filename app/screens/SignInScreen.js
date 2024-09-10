@@ -89,8 +89,8 @@ export default function SignInScreen() {
 
           <TouchableOpacity
             style={styles.btnSignIn}
-            onPress={() => {
-              signin(form.usernameEmail, form.password);
+            onPress={async () => {
+              await signin(form.usernameEmail, form.password);
             }}
             disabled={isLoading}
           >
@@ -115,7 +115,9 @@ export default function SignInScreen() {
               </TouchableOpacity>
             </View>
             <View style={styles.rowStyle}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("reset-password")}
+              >
                 <Text style={styles.txt}>Forgot passsword?</Text>
               </TouchableOpacity>
             </View>
