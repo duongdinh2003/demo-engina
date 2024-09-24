@@ -1,4 +1,4 @@
-package com.mobile.engina
+package com.duongdinh1902.engina
 
 import android.app.Application
 import android.content.res.Configuration

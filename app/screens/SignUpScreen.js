@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Alert,
   Dimensions,
 } from "react-native";
 import React, { useContext, useState } from "react";
@@ -14,9 +13,10 @@ import { Ionicons } from "@expo/vector-icons";
 import FormField from "../../components/FormField";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../../constants/Colors";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import GoogleAuthButton from "../../components/GoogleAuthButton";
 import PasswordField from "../../components/PasswordField";
+import { validateEmail } from "../services/utils";
 
 export default function SignUpScreen() {
   const { signup, isLoading } = useContext(AuthContext);
@@ -26,16 +26,29 @@ export default function SignUpScreen() {
     password: "",
     confirm_password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    confirm_password: "",
+  });
   const navigation = useNavigation();
 
-  const submit = () => {
-    if (!form.usernameEmail || !form.password) {
-      Alert.alert("Error", "Please fill in all the fields");
+  const checkEmail = () => {
+    if (!validateEmail(form.email)) {
+      setErrors((prev) => ({ ...prev, email: "(*) Email is not valid." }));
+    } else {
+      setErrors((prev) => ({ ...prev, email: "" }));
     }
+  };
 
-    console.log(form.usernameEmail);
-    console.log(form.password);
+  const checkConfirmPassword = () => {
+    if (form.confirm_password !== form.password) {
+      setErrors((prev) => ({
+        ...prev,
+        confirm_password: "(*) Confirm password do not match.",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, confirm_password: "" }));
+    }
   };
 
   return (
@@ -80,24 +93,33 @@ export default function SignUpScreen() {
           <FormField
             title="Email"
             handleChangeText={(e) => setForm({ ...form, email: e })}
+            handleBlur={checkEmail}
+            errorMessage={errors.email}
           />
           <FormField
             title="Username"
             handleChangeText={(e) => setForm({ ...form, username: e })}
           />
-          <FormField
+          <PasswordField
             title="Password"
             handleChangeText={(e) => setForm({ ...form, password: e })}
           />
           <PasswordField
             title="Confirm password"
             handleChangeText={(e) => setForm({ ...form, confirm_password: e })}
+            handleBlur={checkConfirmPassword}
+            errorMessage={errors.confirm_password}
           />
 
           <TouchableOpacity
             style={styles.btnSignUp}
             onPress={() => {
-              signup(form.username, form.password, form.email);
+              signup(
+                form.username,
+                form.password,
+                form.email,
+                form.confirm_password
+              );
             }}
             disabled={isLoading}
           >

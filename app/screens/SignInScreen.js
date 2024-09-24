@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Alert,
   Dimensions,
 } from "react-native";
 import React, { useContext, useState } from "react";
@@ -14,8 +13,9 @@ import { Ionicons } from "@expo/vector-icons";
 import FormField from "../../components/FormField";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../../constants/Colors";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import GoogleAuthButton from "../../components/GoogleAuthButton";
+import PasswordField from "../../components/PasswordField";
 
 export default function SignInScreen() {
   const { signin, isLoading } = useContext(AuthContext);
@@ -23,21 +23,7 @@ export default function SignInScreen() {
     usernameEmail: "",
     password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigation = useNavigation();
-
-  const submit = () => {
-    if (!form.usernameEmail || !form.password) {
-      Alert.alert("Error", "Please fill in all the fields");
-    }
-
-    if (form.usernameEmail == "dinh" && form.password == "123") {
-      navigation.navigate("");
-    }
-
-    console.log(form.usernameEmail);
-    console.log(form.password);
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,7 +68,7 @@ export default function SignInScreen() {
             title="Username or Email"
             handleChangeText={(e) => setForm({ ...form, usernameEmail: e })}
           />
-          <FormField
+          <PasswordField
             title="Password"
             handleChangeText={(e) => setForm({ ...form, password: e })}
           />

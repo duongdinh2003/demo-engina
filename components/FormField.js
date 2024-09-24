@@ -1,12 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import React, { useState } from "react";
-import { Feather } from "@expo/vector-icons";
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import React from "react";
 import Colors from "../constants/Colors";
 
 const FormField = ({
@@ -15,10 +8,10 @@ const FormField = ({
   placeholder,
   handleChangeText,
   keyboardType,
+  handleBlur,
+  errorMessage,
   ...props
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <View>
       <Text style={styles.title}>{title}</Text>
@@ -29,22 +22,13 @@ const FormField = ({
           placeholder={placeholder}
           placeholderTextColor={Colors.BLACK}
           onChangeText={handleChangeText}
-          secureTextEntry={title === "Password" && !showPassword}
           keyboardType={keyboardType}
+          onBlur={handleBlur}
         />
-        {title === "Password" && (
-          <TouchableOpacity
-            onPress={() => setShowPassword(!showPassword)}
-            style={{ marginLeft: -50 }}
-          >
-            <Feather
-              name={!showPassword ? "eye" : "eye-off"}
-              size={24}
-              color={Colors.BLACK}
-            />
-          </TouchableOpacity>
-        )}
       </View>
+      {errorMessage ? (
+        <Text style={styles.errorTxt}>{errorMessage}</Text>
+      ) : null}
     </View>
   );
 };
@@ -76,5 +60,12 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontSize: 14,
     width: "100%",
+  },
+  errorTxt: {
+    color: Colors.RED,
+    fontFamily: "Poppins-Medium",
+    fontSize: 12,
+    marginLeft: 5,
+    marginTop: 5,
   },
 });

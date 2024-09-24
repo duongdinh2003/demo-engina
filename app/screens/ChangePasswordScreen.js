@@ -13,9 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 import PasswordField from "../../components/PasswordField";
-import axios from "axios";
-import { BASE_URL } from "../../constants/api";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { handleChangePassword } from "../services/handleAPI";
 
 export default function ChangePasswordScreen() {
@@ -24,6 +22,9 @@ export default function ChangePasswordScreen() {
   const [changePwform, setChangePwForm] = useState({
     old_password: "",
     new_password: "",
+    confirm_password: "",
+  });
+  const [errors, setErrors] = useState({
     confirm_password: "",
   });
 
@@ -35,6 +36,8 @@ export default function ChangePasswordScreen() {
   ) => {
     if (!old_password || !new_password || !confirm_password) {
       Alert.alert("Notice", "Please fill in all the fields");
+    } else if (confirm_password !== new_password) {
+      return;
     } else {
       try {
         const response = await handleChangePassword(
@@ -56,6 +59,17 @@ export default function ChangePasswordScreen() {
           Alert.alert("Error", "An unexpected error occurred.");
         }
       }
+    }
+  };
+
+  const checkConfirmPassword = () => {
+    if (changePwform.confirm_password !== changePwform.new_password) {
+      setErrors((prev) => ({
+        ...prev,
+        confirm_password: "(*) Confirm password do not match.",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, confirm_password: "" }));
     }
   };
 
@@ -99,6 +113,8 @@ export default function ChangePasswordScreen() {
             handleChangeText={(e) =>
               setChangePwForm({ ...changePwform, confirm_password: e })
             }
+            handleBlur={checkConfirmPassword}
+            errorMessage={errors.confirm_password}
           />
 
           <TouchableOpacity

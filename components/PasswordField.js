@@ -14,6 +14,8 @@ export default function PasswordField({
   value,
   placeholder,
   handleChangeText,
+  handleBlur,
+  errorMessage,
   ...props
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +31,7 @@ export default function PasswordField({
           placeholderTextColor={Colors.BLACK}
           onChangeText={handleChangeText}
           secureTextEntry={!showPassword}
+          onBlur={handleBlur}
         />
         {
           <TouchableOpacity
@@ -43,6 +46,9 @@ export default function PasswordField({
           </TouchableOpacity>
         }
       </View>
+      {errorMessage ? (
+        <Text style={styles.errorTxt}>{errorMessage}</Text>
+      ) : null}
     </View>
   );
 }
@@ -72,5 +78,12 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontSize: 14,
     width: "100%",
+  },
+  errorTxt: {
+    color: Colors.RED,
+    fontFamily: "Poppins-Medium",
+    fontSize: 12,
+    marginLeft: 5,
+    marginTop: 5,
   },
 });

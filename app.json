@@ -3,7 +3,7 @@
     "name": "engina",
     "slug": "engina",
     "version": "1.0.0",
-    "scheme": "engina",
+    "scheme": "engina-app",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,22 +14,24 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mobile.engina"
+      "bundleIdentifier": "com.duongdinh1902.engina"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mobile.engina"
+      "package": "com.duongdinh1902.engina"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font"
+    ],
     "extra": {
       "eas": {
-        "projectId": "14742c60-e38c-49c1-b917-16878dd43550"
+        "projectId": "36476845-4258-4bd8-b507-a578c39a81d7"
       }
     }
   }

@@ -2,33 +2,24 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import React, { useContext, useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { makeRedirectUri } from "expo-auth-session";
 import Colors from "../constants/Colors";
 import { handleGoogleSignIn } from "../app/services/handleAPI";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../app/context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const webClientId =
-  "428360323512-s4o6rlaphtgr8lduer2c0uvttbuq4rr2.apps.googleusercontent.com";
-const iosClientId =
-  "428360323512-ke6occ8q39regd9eb7gmgum3eaq10a9i.apps.googleusercontent.com";
-const androidClientId =
-  "428360323512-i01arti9dngif32iectb90in1sctltgs.apps.googleusercontent.com";
-// const redirectUri = "https://auth.expo.io/@duongdinh1902/engina/redirect";
+const webClientId = process.env.EXPO_PUBLIC_WEB_CLIENT_ID;
+const iosClientId = process.env.EXPO_PUBLIC_IOS_CLIENT_ID;
+const androidClientId = process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID;
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function GoogleAuthButton() {
   const { setUserToken, setIsFirstSignIn } = useContext(AuthContext);
-  const redirectUri = makeRedirectUri({
-    useProxy: true,
-  });
 
   const config = {
     webClientId,
     iosClientId,
     androidClientId,
-    redirectUri,
   };
 
   const [request, response, promptAsync] = Google.useAuthRequest(config);
@@ -61,8 +52,6 @@ export default function GoogleAuthButton() {
           console.log("Unexpected error");
         }
       }
-    } else {
-      console.log("Other:", response?.error);
     }
   };
 

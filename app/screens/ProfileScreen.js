@@ -8,9 +8,8 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
-import { BASE_URL, MEDIA_URL } from "../../constants/api";
+import { AuthContext } from "../context/AuthContext";
+import { MEDIA_URL } from "../../constants/api";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";

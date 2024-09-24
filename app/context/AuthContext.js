@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
-import { BASE_URL } from "../constants/api";
 import { Alert } from "react-native";
-import { handleSignIn, handleSignUp } from "../app/services/handleAPI";
+import { handleSignIn, handleSignUp } from "../services/handleAPI";
+import { validateEmail } from "../services/utils";
 
 export const AuthContext = createContext();
 
@@ -23,7 +22,6 @@ export const AuthProvider = ({ children }) => {
         const response = await handleSignIn(username, password);
         if (response.status === 200) {
           // setIsLoading(false);
-          // console.log(response.data);
           let tokens = response.data;
           setUserToken(tokens?.access);
 
@@ -48,16 +46,20 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   };
 
-  const signup = async (username, password, email) => {
-    if (!username || !password || !email) {
+  const signup = async (username, password, email, confirm_password) => {
+    if (!username || !password || !email || !confirm_password) {
       Alert.alert("Notice", "Please fill in all the fields!");
+    } else if (!validateEmail(email)) {
+      return;
+    } else if (password !== confirm_password) {
+      return;
     } else {
       // setIsLoading(true);
       try {
         const response = await handleSignUp(username, password, email);
         if (response.status === 201) {
           let signUpTokens = response.data;
-          // console.log("Resp:", signUpTokens);
+
           setUserToken(signUpTokens?.tokens?.access);
           setIsFirstSignIn(signUpTokens?.tokens?.is_first_login);
 

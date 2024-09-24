@@ -9,9 +9,7 @@ import {
 import React, { useContext, useState } from "react";
 import FormField from "../../components/FormField";
 import Colors from "../../constants/Colors";
-import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
-import { BASE_URL } from "../../constants/api";
+import { AuthContext } from "../context/AuthContext";
 import DropDown from "../../components/DropDown";
 import { level, study_time } from "../../constants/DropDownItem";
 import { handleUpdateProfile } from "../services/handleAPI";

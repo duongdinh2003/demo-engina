@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddInfoModal from "../modals/AddInfoModal";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 export default function HomeScreen() {
   const { isFirstSignIn } = useContext(AuthContext);

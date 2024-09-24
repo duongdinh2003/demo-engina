@@ -1,9 +1,9 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthStack from "./AuthStack";
 import TabNavigation from "./TabNavigation";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 export default function AppNav() {
   const { isLoading, userToken } = useContext(AuthContext);
